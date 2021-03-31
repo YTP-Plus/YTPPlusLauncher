@@ -1,0 +1,6 @@
+*.love
+*.exe
+*.txt
+*.dll
+bin/
+YTPPlusCLI/
