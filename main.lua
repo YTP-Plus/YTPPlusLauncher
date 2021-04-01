@@ -1,30 +1,35 @@
 function game_request(studioversion)
 	local response = Request.send("https://github.com/YTP-Plus/YTPPlusStudio/releases/latest/download/YTPPlusStudio.love?time="..os.time())
-	print(response.code)
-	if response.code ~= 404 then
-		love.filesystem.write('game_' .. studioversion .. '.love', response.body)
-		-- Mount and run
-		love.filesystem.mount('game_' .. studioversion .. '.love', '')
-		package.loaded.main = nil
-		package.loaded.conf = nil
-		love.conf = nil
-		love.init()
-		love.load(args)
+	if response then
+		if response.code ~= 404 then
+			love.filesystem.write('game_' .. studioversion .. '.love', response.body)
+			-- Mount and run
+			love.filesystem.mount('game_' .. studioversion .. '.love', '')
+			package.loaded.main = nil
+			package.loaded.conf = nil
+			love.conf = nil
+			love.init()
+			love.load(args)
+		end
 	end
 end
 
 function studioversioncheck()
 	local response = Request.send("https://ytp-plus.github.io/studio-version.txt?time="..os.time())
-	if response.code ~= 404 then
-		return response.body
+	if response then
+		if response.code ~= 404 then
+			return response.body
+		end
 	end
 	return
 end
 
 function cliversioncheck()
 	local response = Request.send("https://ytp-plus.github.io/cli-version.txt?time="..os.time())
-	if response.code ~= 404 then
-		return response.body
+	if response then
+		if response.code ~= 404 then
+			return response.body
+		end
 	end
 	return
 end
