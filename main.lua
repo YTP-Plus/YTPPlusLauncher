@@ -1,3 +1,6 @@
+function getPath(str)
+    return str:match("(.*[/\\])")
+end
 function game_request(studioversion)
 	local response = Request.send("https://github.com/YTP-Plus/YTPPlusStudio/releases/latest/download/YTPPlusStudio.love?time="..os.time())
 	if response then
@@ -42,7 +45,7 @@ function love.load(args)
 	TimerDone = 0
 	love.window.setMode( Enums.Width, Enums.Height, Enums.WindowFlags )
 	love.filesystem.mount(love.filesystem.getSourceBaseDirectory(), "")
-	love.filesystem.mount(love.filesystem.getWorkingDirectory(), "")
+	love.filesystem.mount(getPath(love.filesystem.getSource()), "")
 end
 
 function love.draw()
@@ -58,7 +61,7 @@ function love.update()
 			studioversion = studioversioncheck
 		end
 		local info = love.filesystem.getInfo("YTPPlusCLI")
-		local cwd = love.filesystem.getWorkingDirectory()
+		local cwd = getPath(love.filesystem.getSource())
 		local path = love.filesystem.getSource()
     	if string.find(path, ".love") then
 			cwd = love.filesystem.getSaveDirectory()
